@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+  <productcreator_adminhtml_productcreatorbackend_index>
+	<reference name="content">
+	  <block type="core/template" name="productcreatorbackend" template="productcreator/productcreatorbackend.phtml"/>
+	</reference>
+  </productcreator_adminhtml_productcreatorbackend_index>
+</layout>
