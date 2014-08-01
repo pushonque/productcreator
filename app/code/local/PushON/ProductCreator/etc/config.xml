@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PushON_ProductCreator>
+            <version>0.1.0</version>
+        </PushON_ProductCreator>
+    </modules>
+    <global>
+        <helpers>
+            <productcreator>
+                <class>PushON_ProductCreator_Helper</class>
+            </productcreator>
+        </helpers>
+        <blocks>
+            <productcreator>
+                <class>PushON_ProductCreator_Block</class>
+            </productcreator>
+        </blocks>
+        <models>
+            <productcreator>
+                <class>PushON_ProductCreator_Model</class>
+            </productcreator>
+        </models>
+    </global>
+    <admin>
+        <routers>
+            <productcreator>
+                <use>admin</use>
+                <args>
+                    <module>PushON_ProductCreator</module>
+                    <frontName>productcreator</frontName>
+                </args>
+            </productcreator>
+        </routers>
+    </admin>
+    <adminhtml>
+        <menu>
+            <productcreator module="productcreator">
+                <title>ProductCreator</title>
+                <sort_order>100</sort_order>
+                <children>
+                    <productcreatorbackend module="productcreator">
+                        <title>Product Creator</title>
+                        <sort_order>0</sort_order>
+                        <action>productcreator/adminhtml_productcreatorbackend</action>
+                    </productcreatorbackend>
+                </children>
+            </productcreator>
+        </menu>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <productcreator translate="title" module="productcreator">
+                            <title>ProductCreator</title>
+                            <sort_order>1000</sort_order>
+                            <children>
+                                <productcreatorbackend translate="title">
+                                    <title>Product Creator</title>
+                                </productcreatorbackend>
+                            </children>
+                        </productcreator>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <productcreator>
+                    <file>productcreator.xml</file>
+                </productcreator>
+            </updates>
+        </layout>
+    </adminhtml>
+</config> 
