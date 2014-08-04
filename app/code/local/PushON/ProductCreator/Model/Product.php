@@ -4,9 +4,11 @@ class PushON_ProductCreator_Model_Product extends Mage_Core_Model_Abstract {
 
     private $productChildren;
     private $attributesUsedArray;
+    private $configuredProductId;
 
     public function createMainProduct($productData) {
-
+       // print_r($productData);
+       // die;
         $productModel = Mage::getModel('catalog/product');
         try {
             $productModel
@@ -17,7 +19,7 @@ class PushON_ProductCreator_Model_Product extends Mage_Core_Model_Abstract {
                     ->setCreatedAt(strtotime('now')) //product creation time
                     //    ->setUpdatedAt(strtotime('now')) //product update time
                     ->setSku($productData['sku']) //SKU
-                    ->setName($productData['name'].'-main') //product name
+                    ->setName($productData['name']) //product name
                     ->setWeight(4.0000)
                     ->setStatus(1) //product status (1 - enabled, 2 - disabled)
                     ->setTaxClassId(4) //tax class (0 - none, 1 - default, 2 - taxable, 4 - shipping)
@@ -39,7 +41,7 @@ class PushON_ProductCreator_Model_Product extends Mage_Core_Model_Abstract {
                     ->setMetaTitle('test meta title 2')
                     ->setMetaKeyword('test meta keyword 2')
                     ->setMetaDescription('test meta description 2')
-                    ->setDescription($productData['description'])
+                    //->setDescription($productData['description'])
                     ->setShortDescription('This is a short description')
                     ->setStockData(array(
                         'use_config_manage_stock' => 0, //'Use config settings' checkbox
@@ -50,23 +52,23 @@ class PushON_ProductCreator_Model_Product extends Mage_Core_Model_Abstract {
                         'qty' => 999 //qty
                             )
                     )
+            
                     ->getTypeInstance()->setUsedProductAttributeIds($this->attributesUsedArray);
             $productModel->getTypeInstance()->setUsedProductAttributeIds($this->attributesUsedArray); //attribute ID of attribute 'color' in my store
             $configurableAttributesData = $productModel->getTypeInstance()->getConfigurableAttributesAsArray();
             $productModel->setCanSaveConfigurableAttributes(true);
             $productModel->setConfigurableAttributesData($configurableAttributesData);
-
-
-            //->setCategoryIds(array(3, 10)); //assign product to categories
-
+            if(isset($productData['items_per_sheet'])){
+                $productModel->setData('items_per_sheet' , $productData['items_per_sheet']);
+            }
             $productModel->save();
-            echo 'main product saved <br>';
             //endif;
         } catch (Exception $e) {
             Mage::log($e->getMessage());
         }
         
         $mainProductId = Mage::getModel('catalog/product')->getIdBySku($productData['sku']);
+        $this->configuredProductId = $mainProductId;
         $mainProduct = Mage::getModel('catalog/product')->load($mainProductId);
         
         foreach($this->productChildren as $childId){
@@ -83,7 +85,7 @@ class PushON_ProductCreator_Model_Product extends Mage_Core_Model_Abstract {
     public function createSimpleProducts($productData) {
 
         $productsInfo = $this->prepareSimpleProducts($productData);
-
+        //print_r($productData);
         $counter = 0;
         $skuArray = array();
 
@@ -139,18 +141,15 @@ class PushON_ProductCreator_Model_Product extends Mage_Core_Model_Abstract {
 
                 $productAttributes = explode(',', $product['attributes']);
                 foreach ($productAttributes as $singAttribute) {
-
                     $attribute = explode('=', $singAttribute);
                     $productModel->setData($attribute[0], $attribute[1]);
                 }
                 $productModel->save();
-                echo 'products saved <br>';
                 //endif;
             } catch (Exception $e) {
                 Mage::log($e->getMessage());
             }
         }
-
         $childrenProducts = Mage::getModel('catalog/product')
                 ->getCollection()
                 ->addAttributeToFilter('sku', array('in' => $skuArray))
@@ -161,17 +160,18 @@ class PushON_ProductCreator_Model_Product extends Mage_Core_Model_Abstract {
             $childrenIDs[] = $childProduct->getId();
         }
 
-        $this->productChildren = $childrenIDs; //implode(',', $childrenIDs);
+        $this->productChildren = $childrenIDs;
+       
     }
 
     public function prepareSimpleProducts($productData) {
 
-        if (isset($productData['color'])){
-            $data['color'] = $this->addKeysToArrayString('color', $productData['color']);
-            $this->attributesUsedArray[] = 92;
+        if (isset($productData['paper_size'])){
+            $data['paper_size'] = $this->addKeysToArrayString('paper_size', $productData['paper_size']);
+            $this->attributesUsedArray[] = 133;
         }
-        if (isset($productData['size'])){
-            $data['size'] = $this->addKeysToArrayString('size', $productData['size']);
+        if (isset($productData['paper_weight_and_finish'])){
+            $data['paper_weight_and_finish'] = $this->addKeysToArrayString('paper_weight_and_finish', $productData['paper_weight_and_finish']);
             $this->attributesUsedArray[] = 134;
         }
         
@@ -212,6 +212,14 @@ class PushON_ProductCreator_Model_Product extends Mage_Core_Model_Abstract {
 
         //$loader->saveProducts( $_configurableProduct->getid(), array_keys( $newids ) );                
         $loader->saveProducts($_configurableProduct, array_keys($newids));
+    }
+    
+    public function getChildrenIds(){
+        return $this->productChildren;
+    }
+    
+    public function getProductConfiguredId(){
+        return $this->configuredProductId;
     }
 
 }

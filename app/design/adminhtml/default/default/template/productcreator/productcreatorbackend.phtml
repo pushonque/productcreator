@@ -14,7 +14,8 @@
         </div>
     </div>
 </div>
-<form action="">
+<form action="<?php echo Mage::helper('adminhtml')->getUrl('productcreator/adminhtml_productcreatorbackend/create'); ?>" method="post">
+    <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
     <div class="entry-edit">
         <div class="entry-edit-head">
             <h4 class="icon-head head-edit-form fieldset-legend">Add a new Product</h4>
@@ -26,7 +27,7 @@
                 <tr>
                     <td class="label"><label for="product name">Product Name</label></td>
                     <td class="value">
-                        <input type="text" class=" input-text required-entry" title="Template Name" value="" name="code" id="code">
+                        <input type="text" class=" input-text required-entry" title="Template Name" value="" name="name">
                     </td>
                 </tr>
                 <tr>
@@ -34,7 +35,7 @@
                         <label for="">Sku</label>
                     </td>
                     <td class="label">
-                        <input type="text" />
+                        <input type="text" name="sku"/>
                     </td>
                 </tr>
                 <tr>
@@ -42,21 +43,24 @@
                         <label for="">Paper Sizes</label>
                     </td>
                     <td class="label">
-                        <select name="" id="" multiple="">
-                            <option value="">A1</option>
-                            <option value="">A2</option>
-                            <option value="">A3</option>
+                        <?php $papersizes = $this->getAttributeOptions('paper_size') ?>
+                        <select name="paper_size[]" id="" multiple="">
+                            <?php foreach ($papersizes as $papersize): ?>
+                            <option value="<?php echo $papersize['value']?> "><?php echo $papersize['label']?></option>
+                            <?php endforeach ?>
                         </select>
                     </td>
                 </tr>
                 <tr>
-                    <td class="label">
+                    <td class="label">paper_weight_and_finish
                         <label for="">Paper Weight &amp Finish</label>
                     </td>
                     <td class="label">
-                        <select name="" id="" multiple="">
-                            <option value="">100 gsm Matt Finish (Uncoated)</option>
-                            <option value="">100 gsm Matt Finish (coated)</option>
+                        <?php $paperweightandfinishes = $this->getAttributeOptions('paper_weight_and_finish') ?>
+                        <select name="paper_weight_and_finish[]" id="" multiple="">
+                            <?php foreach ($paperweightandfinishes as $paperweightandfinish): ?>
+                            <option value="<?php echo $paperweightandfinish['value']?> "><?php echo $paperweightandfinish['label']?></option>
+                            <?php endforeach ?>
                         </select>
                     </td>
                 </tr>
@@ -64,8 +68,8 @@
                     <td class="label">
                         <label for="">Items Per Sheet</label>
                     </td>
-                    <td class="label">
-                        <input type="text" />
+                    <td class="label" name="items_per_sheet">
+                        <input type="text" name="items_per_sheet"/>
                     </td>
                 </tr>
                 <tr>
@@ -90,8 +94,8 @@
             </tbody>
         </table>
     </div>
+    <input type="submit" value="submit" />
 </form>
-
 <!--<form action="/que.php" method="post">
     <p>
         <label for="">Sku</label>
