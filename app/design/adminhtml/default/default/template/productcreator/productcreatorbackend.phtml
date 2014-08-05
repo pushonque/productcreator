@@ -46,30 +46,48 @@
                         <?php $papersizes = $this->getAttributeOptions('paper_size') ?>
                         <select name="paper_size[]" id="" multiple="">
                             <?php foreach ($papersizes as $papersize): ?>
-                            <option value="<?php echo $papersize['value']?> "><?php echo $papersize['label']?></option>
-                            <?php endforeach ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">paper_weight_and_finish
-                        <label for="">Paper Weight &amp Finish</label>
-                    </td>
-                    <td class="label">
-                        <?php $paperweightandfinishes = $this->getAttributeOptions('paper_weight_and_finish') ?>
-                        <select name="paper_weight_and_finish[]" id="" multiple="">
-                            <?php foreach ($paperweightandfinishes as $paperweightandfinish): ?>
-                            <option value="<?php echo $paperweightandfinish['value']?> "><?php echo $paperweightandfinish['label']?></option>
+                                <option value="<?php echo $papersize['value'] ?> "><?php echo $papersize['label'] ?></option>
                             <?php endforeach ?>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td class="label">
-                        <label for="">Items Per Sheet</label>
+                        <label for="">Finish</label>
                     </td>
-                    <td class="label" name="items_per_sheet">
-                        <input type="text" name="items_per_sheet"/>
+                    <td class="label">
+                        <?php $finishes = $this->getAttributeOptions('finish') ?>
+                        <select name="finish[]" id="" multiple="">
+                            <?php foreach ($finishes as $finish): ?>
+                                <option value="<?php echo $finish['value'] ?> "><?php echo $finish['label'] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        <label for="">Paper Weight</label>
+                    </td>
+                    <td class="label">
+                        <?php $paperweights = $this->getAttributeOptions('paper_weight') ?>
+                        <select name="paper_weight[]" id="" multiple="">
+                            <?php foreach ($paperweights as $paperweight): ?>
+                                <option value="<?php echo $paperweight['value'] ?> "><?php echo $paperweight['label'] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        <label for="">Colour</label>
+                    </td>
+                    <td class="label">
+                        <?php $colours = $this->getAttributeOptions('colour') ?>
+                        <select name="colour[]" id="" multiple="">
+                            <?php foreach ($colours as $colour): ?>
+                                <option value="<?php echo $colour['value'] ?> "><?php echo $colour['label'] ?></option>
+                            <?php endforeach ?>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -77,17 +95,11 @@
                         <label for="">Sides</label>
                     </td>
                     <td class="label">
-                        <input type="text" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">
-                        <label for="">Quantities</label>
-                    </td>
-                    <td class="label">
-                        <select name="" id="" multiple="">
-                            <option value="">10,15</option>
-                            <option value="">15,50</option>
+                        <?php $sides = $this->getAttributeOptions('sides') ?>
+                        <select name="sides[]" id="" multiple="">
+                            <?php foreach ($sides as $side): ?>
+                                <option value="<?php echo $side['value'] ?> "><?php echo $side['label'] ?></option>
+                            <?php endforeach ?>
                         </select>
                     </td>
                 </tr>

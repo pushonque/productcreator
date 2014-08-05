@@ -108,7 +108,7 @@ class PushON_ProductCreator_Model_Product extends Mage_Core_Model_Abstract {
                         ->setWeight(4.0000)
                         ->setStatus(1) //product status (1 - enabled, 2 - disabled)
                         ->setTaxClassId(4) //tax class (0 - none, 1 - default, 2 - taxable, 4 - shipping)
-                        ->setVisibility(Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH) //catalog and search visibility
+                        ->setVisibility(Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE) //catalog and search visibility
                         ->setManufacturer(28) //manufacturer id
                         //->setColor(6)
                         //->setData('color',7)
@@ -170,11 +170,18 @@ class PushON_ProductCreator_Model_Product extends Mage_Core_Model_Abstract {
             $data['paper_size'] = $this->addKeysToArrayString('paper_size', $productData['paper_size']);
             $this->attributesUsedArray[] = 133;
         }
-        if (isset($productData['paper_weight_and_finish'])){
-            $data['paper_weight_and_finish'] = $this->addKeysToArrayString('paper_weight_and_finish', $productData['paper_weight_and_finish']);
-            $this->attributesUsedArray[] = 134;
+        if (isset($productData['finish'])){
+            $data['finish'] = $this->addKeysToArrayString('finish', $productData['finish']);
+            $this->attributesUsedArray[] = 141;
         }
-        
+        if (isset($productData['paper_weight'])){
+            $data['paper_weight'] = $this->addKeysToArrayString('paper_weight', $productData['paper_weight']);
+            $this->attributesUsedArray[] = 143;
+        }
+        if (isset($productData['colour'])){
+            $data['colour'] = $this->addKeysToArrayString('colour', $productData['colour']);
+            $this->attributesUsedArray[] = 144;
+        }
         $perms = Mage::Helper('productcreator/permutations')->getPermutations($data);
 
         $productArray = array();
